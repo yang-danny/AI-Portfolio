@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
+
+
 const navItems = [
   { name: 'HOME', href: '#home' },
   { name: 'PROJECTS', href: '#projects' },
@@ -56,10 +58,27 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href="#home" className="text-xl md:text-2xl font-display font-bold gradient-text">
-              LIVING DATA SCULPTURE
+            <a 
+              href="#home" 
+              className="group relative text-4xl md:text-4xl font-display font-bold
+                         transition-all duration-300 
+                         hover:scale-110 
+                         hover:animate-pulse
+                         inline-block"
+            >
+              {/* Flashing border effect */}
+              <span className="absolute inset-0 rounded-lg border-2 border-transparent 
+                             group-hover:border-primary-cyan 
+                             group-hover:animate-[flash_1.5s_ease-in-out_infinite]
+                             group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)]
+                             transition-all duration-300
+                             -m-2 p-2" />
+              
+              {/* Logo text with shake effect */}
+              <span className="relative z-10 inline-block gradient-text group-hover:animate-[shake_0.5s_ease-in-out]">
+                D.Y
+              </span>
             </a>
-
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
@@ -67,13 +86,27 @@ export default function Navigation() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`text-sm font-medium transition-all duration-300 hover:text-primary-cyan ${
+                  className={`group relative text-sm font-medium transition-all duration-300 
+                            hover:scale-110 
+                            hover:animate-pulse
+                            inline-block px-3 py-1
+                            ${
                     activeSection === item.href.replace('#', '')
                       ? 'text-primary-cyan'
                       : 'text-gray-300'
                   }`}
                 >
-                  {item.name}
+                  {/* Flashing border effect */}
+                  <span className="absolute inset-0 rounded border border-transparent 
+                                 group-hover:border-primary-cyan 
+                                 group-hover:animate-[flash_1.5s_ease-in-out_infinite]
+                                 group-hover:shadow-[0_0_10px_rgba(0,243,255,0.4)]
+                                 transition-all duration-300" />
+                  
+                  {/* Nav text with shake effect */}
+                  <span className="relative z-10 inline-block group-hover:animate-[shake_0.5s_ease-in-out]">
+                    {item.name}
+                  </span>
                 </a>
               ))}
             </div>
@@ -99,13 +132,27 @@ export default function Navigation() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`text-2xl font-medium transition-all duration-300 hover:text-primary-cyan ${
+                  className={`group relative text-2xl font-medium transition-all duration-300 
+                            hover:scale-110 
+                            hover:animate-pulse
+                            inline-block px-4 py-2
+                            ${
                     activeSection === item.href.replace('#', '')
                       ? 'text-primary-cyan'
                       : 'text-gray-300'
                   }`}
                 >
-                  {item.name}
+                  {/* Flashing border effect */}
+                  <span className="absolute inset-0 rounded border-2 border-transparent 
+                                 group-hover:border-primary-cyan 
+                                 group-hover:animate-[flash_1.5s_ease-in-out_infinite]
+                                 group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)]
+                                 transition-all duration-300" />
+                  
+                  {/* Nav text with shake effect */}
+                  <span className="relative z-10 inline-block group-hover:animate-[shake_0.5s_ease-in-out]">
+                    {item.name}
+                  </span>
                 </a>
               ))}
             </div>

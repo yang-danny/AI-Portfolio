@@ -20,7 +20,7 @@ export default function Hero() {
       </div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-900/50 to-dark-900 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-900/50 to-dark-900 z-10 pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-20 text-center px-6 max-w-5xl">
@@ -29,9 +29,10 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          <h2 className="text-sm md:text-base tracking-[0.3em] text-gray-400 mb-4 font-light">
-            LIVING DATA SCULPTURE
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
+            Welcome, I'm Danny, a
           </h2>
+
         </motion.div>
 
         <motion.h1
@@ -40,21 +41,65 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
-          <span className="gradient-text">FULL STACK ARCHITECT</span>
+          <span className="gradient-text">FULL STACK ENGINEER & </span>
           <br />
-          <span className="text-white">& AI ENGINEER</span>
+          <span className="gradient-text">AI ENGINEER</span>
         </motion.h1>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
+          className="flex flex-col sm:flex-row gap-4 items-center justify-center"
         >
-          <button
-            onClick={scrollToProjects}
-            className="btn-primary text-sm tracking-wider"
+          {/* Download Resume Button */}
+          <a
+            href="/Danny-Yang-Resume.pdf"
+            download="Danny-Yang-Resume.pdf"
+            className="btn-primary text-sm tracking-wider flex items-center gap-2"
           >
-            DISCOVER MY WORK
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="18" 
+              height="18" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            MY RESUME
+          </a>
+
+          {/* Contact Button */}
+          <button
+            onClick={() => {
+              const element = document.getElementById('contact');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="btn-secondary text-sm tracking-wider flex items-center gap-2"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="18" 
+              height="18" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            CONTACT ME
           </button>
         </motion.div>
       </div>

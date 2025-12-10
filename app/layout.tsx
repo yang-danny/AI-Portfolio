@@ -2,19 +2,24 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Portfolio - Full Stack Architect & AI Engineer",
+  title: "Danny Yang - Full Stack Engineer & AI Engineer",
   description:
     "Interactive 3D portfolio showcasing AI/ML projects, full-stack development expertise, and innovative solutions.",
   keywords: [
     "AI",
     "Full Stack",
-    "Machine Learning",
+    "Developer",
+    "Engineer",
+    "AI Engineer",
+    "Frontend",
+    "Backend",
+    "Software Engineer",
     "Portfolio",
     "React",
     "Next.js",
     "Three.js",
   ],
-  authors: [{ name: "Your Name" }],
+  authors: [{ name: "Danny Yang" }],
   openGraph: {
     title: "AI Portfolio - Full Stack Architect & AI Engineer",
     description:
