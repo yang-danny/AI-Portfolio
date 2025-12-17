@@ -28,30 +28,58 @@ export interface SkillCategory {
   technologies: string[];
   color: string;
   position: { x: number; y: number };
+  icon?: string;
 }
 
 // Projects Data
 export const projects: Project[] = [
   {
     id: '1',
-    title: 'GenAI Marketing Platform',
-    description: 'GenAI Marketing Platform integrated ad creation, campaign visualization, valuation, viola...',
+    title: 'AI HireFlow',
+    description: 'AI-HireFlow is a comprehensive platform that leverages artificial intelligence to streamline your job application process.',
     image: '/projects/genai-marketing.jpg',
-    technologies: ['React', 'Node.js', 'OpenAI', 'TensorFlow'],
+    technologies: ['React', 'Node.js', 'Fastify', 'MongoDB', 'Gemini', 'Redis', 'Claude', 'Docker', 'GitHub Actions', 'E2E'],  
     link: '#',
-    category: 'AI/ML',
+    category: 'AI/Fullstack',
   },
   {
     id: '2',
-    title: 'Neural Network Trading Bot',
-    description: 'Neural network Trading Bot analyzes financial data, predicts stock, analyzes intermarket...',
+    title: 'AI Curation',
+    description: 'AI-Curation is an intelligent, autonomous content curation and publication system that leverages multiple specialized AI agents...',
     image: '/projects/trading-bot.jpg',
-    technologies: ['Python', 'PyTorch', 'FastAPI', 'PostgreSQL'],
+    technologies: ['Python', 'AI Agents', 'Multi-Agent', 'Google ADK', 'LLM', 'Google Search'],
     link: '#',
-    category: 'AI/ML',
+    category: 'AI/Media',
   },
   {
     id: '3',
+    title: 'Computer Vision Analytics',
+    description: 'Computer Vision project for real-time object detection, classification, and image segmentation',
+    image: '/projects/computer-vision.jpg',
+    technologies: ['Python', 'OpenCV', 'TensorFlow', 'React'],
+    link: '#',
+    category: 'AI/ML',
+  },
+   {
+    id: '4',
+    title: 'AI HireFlow',
+    description: 'AI-HireFlow is a comprehensive platform that leverages artificial intelligence to streamline your job application process.',
+    image: '/projects/genai-marketing.jpg',
+    technologies: ['React', 'Node.js', 'Fastify', 'MongoDB', 'Gemini', 'Redis', 'Claude', 'Docker', 'GitHub Actions', 'E2E'],  
+    link: '#',
+    category: 'AI/Fullstack',
+  },
+  {
+    id: '5',
+    title: 'AI Curation',
+    description: 'AI-Curation is an intelligent, autonomous content curation and publication system that leverages multiple specialized AI agents...',
+    image: '/projects/trading-bot.jpg',
+    technologies: ['Python', 'AI Agents', 'Multi-Agent', 'Google ADK', 'LLM', 'Google Search'],
+    link: '#',
+    category: 'AI/Media',
+  },
+  {
+    id: '6',
     title: 'Computer Vision Analytics',
     description: 'Computer Vision project for real-time object detection, classification, and image segmentation',
     image: '/projects/computer-vision.jpg',
@@ -63,41 +91,50 @@ export const projects: Project[] = [
 
 // Timeline Data
 export const timeline: TimelineEntry[] = [
-  {
+   {
     id: '1',
     type: 'work',
-    title: 'Full Stack Developer',
-    organization: 'Tech University',
-    startDate: '2023',
+    title: 'Web Developer & IT Support',
+    organization: 'Side By Side Advocacy',
+    startDate: '2021',
     endDate: 'Present',
-    description: 'Full Stack Developer at DataFlow Solutions is instrumental in digital engagement projects, with the marketconservment...',
+    description: 'Web Developer & IT Support at Side By Side Advocacy...',
   },
   {
     id: '2',
     type: 'work',
-    title: 'Junior AI Researcher',
-    organization: 'Full Stack Developer at DataFlow Solutions',
-    startDate: '2020',
-    endDate: '2023',
-    description: 'Full Stack Developer at LuxurFlow Solutions is awestomed panel an eniangement project, with the marketconservment...',
+    title: 'Full Stack Developer',
+    organization: 'Hiper Pty Ltd',
+    startDate: '2014',
+    endDate: '2022',
+    description: 'Full Stack Developer at Hiper Pty Ltd...',
   },
-  {
+    {
     id: '3',
-    type: 'education',
-    title: 'Master of Computer Science',
-    organization: 'Tech University',
-    startDate: '2018',
-    endDate: '2020',
-    description: 'Master of Computer Science, Tech University. Studied advanced AI and machine learning algorithms.',
+    type: 'work',
+    title: 'System Administrator',
+    organization: 'Enovo Pty Ltd',
+    startDate: '2011',
+    endDate: '2014',
+    description: 'System Administrator at Enovo Pty Ltd...',
   },
   {
     id: '4',
     type: 'education',
-    title: 'Master of Computer Science',
-    organization: 'Tech University',
-    startDate: '2018',
-    endDate: '2018',
-    description: 'Master of Computer Science, Tech University',
+    title: 'Master of Information Technology',
+    organization: ' University of Technology Sydney',
+    startDate: '2009',
+    endDate: '2010',
+    description: 'Master of Information Technology, University of Technology Sydney. Studied software programming and algorithms.',
+  },
+  {
+    id: '5',
+    type: 'education',
+    title: 'Bachelor of Information Technology',
+    organization: 'University of Newcastle',
+    startDate: '2006',
+    endDate: '2008',
+    description: 'Bachelor of Information Technology, University of Newcastle. Studied software developing and business analysis.',
   },
 ];
 
@@ -105,38 +142,41 @@ export const timeline: TimelineEntry[] = [
 export const skills: SkillCategory[] = [
   {
     id: '1',
-    name: 'AI/ML',
-    technologies: ['PyTorch', 'TensorFlow', 'Langchain'],
-    color: '#00d9ff',
+    name: 'AI',
+    technologies: ['MCP', 'RAG', 'LLMs' , 'AI Agents', 'Vibe Coding'],
+    color: '#a855f7',
     position: { x: 200, y: 150 },
+    icon: '/AI.png',
   },
   {
     id: '2',
     name: 'Full Stack',
-    technologies: ['React', 'Node.js', 'Python'],
+    technologies: ['React', 'Next.js', 'Node.js', 'MongoDB', 'PostgreSQL'],
     color: '#3b82f6',
     position: { x: 500, y: 200 },
+    icon: '/FullStack.png',
   },
   {
     id: '3',
     name: 'Cloud & DevOps',
-    technologies: ['AWS', 'Docker', 'Kubernetes'],
-    color: '#a855f7',
+    technologies: ['AWS', 'Azure', 'CI/CD', 'Docker', 'Kubernetes'],
+    color: '#00d9ff',
     position: { x: 800, y: 150 },
+    icon: '/DevOps.png',
   },
 ];
 
 // Contact Info
 export const contactInfo = {
-  email: 'contact.info@lionsthese.com',
-  linkedin: 'https://linkedin.com',
-  github: 'https://github.com',
-  twitter: 'https://twitter.com',
+  email: 'yang_danny@hotmail.com',
+  linkedin: 'https://www.linkedin.com/in/danny-yang7/',
+  github: 'hhttps://github.com/yang-danny',
+  portfolio: 'https://yang-danny.netlify.app/',
 };
 
 // AI Chatbot Responses
 export const aiResponses = {
-  greeting: "AI ASSISTANT: I see you're interested in vector databases. The GenAI Marketing Platform project is a great example. Shall I take you there?",
+  greeting: "I see you're interested in vector databases. The GenAI Marketing Platform project is a great example. Shall I take you there?",
   projects: "I have worked on several exciting projects including GenAI Marketing Platform, Neural Network Trading Bot, and Computer Vision Analytics. Which one would you like to know more about?",
   skills: "My expertise spans AI/ML (PyTorch, TensorFlow, Langchain), Full Stack Development (React, Node.js, Python), and Cloud & DevOps (AWS, Docker, Kubernetes).",
   experience: "I'm currently working as a Full Stack Developer at Tech University. Previously, I was a Junior AI Researcher at DataFlow Solutions.",

@@ -26,6 +26,9 @@ export const metadata: Metadata = {
       "Interactive 3D portfolio showcasing AI/ML projects and full-stack development expertise.",
     type: "website",
   },
+  icons: {
+    icon: "/logo.ico",
+  },
 };
 
 export default function RootLayout({

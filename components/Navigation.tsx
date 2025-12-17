@@ -75,7 +75,7 @@ export default function Navigation() {
                              -m-2 p-2" />
               
               {/* Logo text with shake effect */}
-              <span className="relative z-10 inline-block gradient-text group-hover:animate-[shake_0.5s_ease-in-out]">
+              <span className="relative z-10 inline-block gradient-text ">
                 D.Y
               </span>
             </a>
@@ -104,7 +104,7 @@ export default function Navigation() {
                                  transition-all duration-300" />
                   
                   {/* Nav text with shake effect */}
-                  <span className="relative z-10 inline-block group-hover:animate-[shake_0.5s_ease-in-out]">
+                  <span className="relative z-10 inline-block ">
                     {item.name}
                   </span>
                 </a>

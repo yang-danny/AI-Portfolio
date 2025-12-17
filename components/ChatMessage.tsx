@@ -19,10 +19,10 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       {/* Avatar */}
       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0 ${
         isAI 
-          ? 'bg-gradient-to-br from-primary-cyan to-primary-purple' 
-          : 'bg-gray-700'
+          ? 'border-2 border-primary-purple' 
+          : 'border-2 border-primary-cyan'
       }`}>
-        {isAI ? '🧠' : '👤'}
+        {isAI ? <img src='/ai-icon.png' alt='AI Icon' className='w-6 h-6' /> : '👤'}
       </div>
 
       {/* Message Bubble */}

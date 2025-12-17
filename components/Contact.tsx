@@ -3,17 +3,17 @@
 import { motion } from 'framer-motion';
 import { contactInfo } from '@/data/portfolio-data';
 import ContactForm from './ContactForm';
-import { Linkedin, Github, Twitter } from 'lucide-react';
+import { Linkedin, Github, Globe, Mail } from 'lucide-react';
 
 export default function Contact() {
   const socialLinks = [
     { icon: Linkedin, href: contactInfo.linkedin, label: 'LinkedIn' },
     { icon: Github, href: contactInfo.github, label: 'GitHub' },
-    { icon: Twitter, href: contactInfo.twitter, label: 'Twitter' },
+    { icon: Globe, href: contactInfo.portfolio, label: 'Portfolio' },
   ];
 
   return (
-    <section id="contact" className="section-padding bg-dark-900 relative overflow-hidden">
+    <section id="contact" className="section-padding bg-dark-800 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-primary-cyan/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-purple/10 rounded-full blur-3xl" />
@@ -63,7 +63,7 @@ export default function Contact() {
                 href={`mailto:${contactInfo.email}`}
                 className="text-primary-cyan hover:text-primary-cyan/80 transition-colors inline-flex items-center gap-2"
               >
-                <span className="text-2xl">✉️</span>
+                <span className="text-2xl"><Mail /></span>
                 {contactInfo.email}
               </a>
             </div>

@@ -21,9 +21,20 @@ html {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: 
+    /* Diagonal neon line 1 - cyan from top left */
+    linear-gradient(135deg, transparent 0%, transparent 45%, rgba(0, 217, 255, 0.15) 48%, rgba(0, 217, 255, 0.3) 50%, rgba(0, 217, 255, 0.15) 52%, transparent 55%, transparent 100%),
+    /* Diagonal neon line 2 - magenta from top right */
+    linear-gradient(45deg, transparent 0%, transparent 35%, rgba(255, 0, 110, 0.15) 38%, rgba(255, 0, 110, 0.25) 40%, rgba(255, 0, 110, 0.15) 42%, transparent 45%, transparent 100%),
+    /* Diagonal neon line 3 - cyan accent */
+    linear-gradient(155deg, transparent 0%, transparent 60%, rgba(0, 217, 255, 0.1) 63%, rgba(0, 217, 255, 0.2) 65%, rgba(0, 217, 255, 0.1) 67%, transparent 70%, transparent 100%),
+    /* Diagonal neon line 4 - magenta accent */
+    linear-gradient(25deg, transparent 0%, transparent 75%, rgba(255, 0, 110, 0.1) 78%, rgba(255, 0, 110, 0.2) 80%, rgba(255, 0, 110, 0.1) 82%, transparent 85%, transparent 100%),
+    /* Base dark gradient */
+    radial-gradient(ellipse at top, #0f0f23 0%, #050510 100%);
   font-family: "Inter", sans-serif;
   overflow-x: hidden;
+  position: relative;
 }
 
 /* Custom Scrollbar */
@@ -84,7 +95,7 @@ body {
 }
 
 .btn-secondary {
-  @apply px-8 py-3.5 border-2 border-primary-cyan text-primary-cyan rounded-lg font-medium;
+  @apply px-8 py-2 border-2 border-primary-cyan text-primary-cyan rounded-lg font-medium;
   @apply transition-all duration-300 hover:bg-primary-cyan hover:text-dark-900 hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] hover:scale-105;
 }
 

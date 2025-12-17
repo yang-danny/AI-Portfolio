@@ -8,7 +8,7 @@ import AIChatbot from '@/components/AIChatbot';
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-dark-900">
+    <main className="relative min-h-screen bg-dark-800 relative overflow-hidden">
       <Navigation />
       <Hero />
       <Projects />

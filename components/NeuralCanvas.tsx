@@ -44,6 +44,14 @@ export default function NeuralCanvas() {
   const mouseRef = useRef({ x: 9999, y: 9999 });
   const mouseTrailRef = useRef<{x: number, y: number}[]>([]); // Mouse trail for fire effect
   const rotationRef = useRef({ x: 0, y: 0, autoY: 0.0002 }); // Slower spin
+  
+  // Sunrise animation state
+  const sunriseRef = useRef({ 
+    yOffset: 800, // Start from below viewport
+    blur: 15, // Start with heavy blur
+    startTime: Date.now(),
+    duration: 3000 // 3 second animation
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -121,7 +129,7 @@ export default function NeuralCanvas() {
       const scale = perspective / (perspective + z);
       return {
         x: x * scale + width / 2,
-        y: y * scale + height / 2,
+        y: y * scale + height / 2 + sunriseRef.current.yOffset, // Apply sunrise Y offset
         scale
       };
     };
@@ -144,8 +152,24 @@ export default function NeuralCanvas() {
       const width = canvas.offsetWidth;
       const height = canvas.offsetHeight;
 
-      ctx.fillStyle = 'rgba(5, 5, 10, 0.25)';
-      ctx.fillRect(0, 0, width, height);
+      // Update sunrise animation
+      const elapsed = Date.now() - sunriseRef.current.startTime;
+      const progress = Math.min(1, elapsed / sunriseRef.current.duration);
+      const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease-out cubic for smooth deceleration
+      
+      sunriseRef.current.yOffset = 800 * (1 - easeProgress); // Rise from bottom
+      sunriseRef.current.blur = 15 * (1 - easeProgress); // Blur from 15 to 0
+
+      // Apply blur filter during animation
+      ctx.filter = `blur(${sunriseRef.current.blur}px)`;
+      
+      ctx.clearRect(0, 0, width, height);
+
+      // Reset filter for drawing
+      ctx.filter = 'none';
+      
+      // Re-apply blur for 3D elements
+      ctx.filter = `blur(${sunriseRef.current.blur}px)`;
 
       rotationRef.current.y += rotationRef.current.autoY;
       
@@ -278,6 +302,9 @@ export default function NeuralCanvas() {
           }
         }
       }
+      
+      // Reset filter before drawing particles (they should remain sharp)
+      ctx.filter = 'none';
       ctx.globalAlpha = 1;
 
       const sortedNodes = [...nodes].sort((a, b) => b.scale - a.scale);
@@ -355,8 +382,11 @@ export default function NeuralCanvas() {
            ctx.beginPath();
            ctx.arc(node.screenX, node.screenY, size * 0.4, 0, Math.PI * 2);
            ctx.fill();
-        }
+         }
       });
+      
+      // Reset filter at end of frame
+      ctx.filter = 'none';
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -376,8 +406,8 @@ export default function NeuralCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto"
-      style={{ background: 'transparent' }}
+      className=" absolute inset-0 w-full h-full pointer-events-auto bg-dark-800 overflow-hidden "   
     />
+     
   );
 }

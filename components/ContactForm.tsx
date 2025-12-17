@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 export default function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,20 +13,65 @@ export default function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
 
-    // Simulate form submission
-    setTimeout(() => {
+    // Check if EmailJS is configured
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey || 
+        serviceId.includes('your_') || templateId.includes('your_') || publicKey.includes('your_')) {
+      console.error('EmailJS is not configured properly. Please set up your EmailJS credentials in .env.local');
+      setSubmitStatus('error');
+      setErrorMessage('EmailJS is not configured properly. Please set up your credentials.');
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      
-      // Reset status after 3 seconds
-      setTimeout(() => setSubmitStatus('idle'), 3000);
-    }, 1500);
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+
+    try {
+      // Send email using EmailJS
+      const result = await emailjs.sendForm(
+        serviceId,
+        templateId,
+        formRef.current!,
+        publicKey
+      );
+
+      if (result.status === 200) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        
+        // Reset status after 5 seconds
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      } else {
+        setSubmitStatus('error');
+        setErrorMessage('Failed to send message. Please try again.');
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      }
+    } catch (error: any) {
+      // Check for specific configuration errors
+      if (error?.status === 422 && error?.text?.includes('recipients address is empty')) {
+        console.error('🚨 CONFIGURATION ERROR: Your EmailJS template is missing the "To Email" field.');
+        const msg = 'Configuration Error: EmailJS template is missing "To Email" field.';
+        setErrorMessage(msg);
+      } else {
+        console.error('EmailJS error:', error);
+        setErrorMessage('Failed to send message. Please try again.');
+      }
+
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,7 +82,7 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="glass rounded-xl p-8 space-y-6">
+    <form ref={formRef} onSubmit={handleSubmit} className="glass rounded-xl p-8 space-y-6">
       {/* Name Input */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
@@ -116,7 +163,7 @@ export default function ContactForm() {
       {/* Error Message */}
       {submitStatus === 'error' && (
         <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/50 text-red-400 text-center">
-          Failed to send message. Please try again.
+          {errorMessage || 'Failed to send message. Please try again.'}
         </div>
       )}
     </form>

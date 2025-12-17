@@ -22,7 +22,7 @@ export default function SkillNode({ skill }: SkillNodeProps) {
         
         {/* Main Circle */}
         <div 
-          className="relative w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center border-2 glass transition-all duration-300 group-hover:scale-110"
+          className="relative w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center border-4 bg-dark-800 transition-all duration-300 group-hover:scale-110"
           style={{ 
             borderColor: skill.color,
             boxShadow: `0 0 20px ${skill.color}40`
@@ -36,11 +36,29 @@ export default function SkillNode({ skill }: SkillNodeProps) {
             }}
           />
           
-          {/* Center Dot */}
-          <div 
-            className="absolute w-4 h-4 rounded-full animate-pulse"
-            style={{ backgroundColor: skill.color }}
-          />
+          {/* Center Element */}
+          {skill.icon ? (
+            <div 
+              className="absolute w-16 h-16 animate-pulse"
+              style={{ 
+                backgroundColor: skill.color,
+                maskImage: `url(${skill.icon})`,
+                maskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskImage: `url(${skill.icon})`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'center',
+                boxShadow: `0 0 15px ${skill.color}80` // Add glow to match
+              }} 
+            />
+          ) : (
+            <div 
+              className="absolute w-8 h-8 rounded-full animate-pulse"
+              style={{ backgroundColor: skill.color }}
+            />
+          )}
         </div>
       </div>
 
