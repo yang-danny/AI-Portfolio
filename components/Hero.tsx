@@ -4,13 +4,35 @@ import { useState, useEffect, useRef } from 'react';
 import NeuralCanvas from './NeuralCanvas';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
+// Particle interface for client-side rendering
+interface Particle {
+  id: number;
+  left: number;
+  top: number;
+  duration: number;
+  delay: number;
+}
+
 export default function Hero() {
   const [displayedText, setDisplayedText] = useState('');
   const [typingComplete, setTypingComplete] = useState(false);
   const [buttonsAnimated, setButtonsAnimated] = useState(false);
+  const [particles, setParticles] = useState<Particle[]>([]);
   const fullText = "Welcome, I'm Danny, a";
   
-  const heroRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Generate particles client-side only
+  useEffect(() => {
+    const generatedParticles = Array.from({ length: 25 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 3 + Math.random() * 3,
+      delay: Math.random() * 4,
+    }));
+    setParticles(generatedParticles);
+  }, []);
   
   // Track scroll progress of hero section
   const { scrollYProgress } = useScroll({
@@ -19,13 +41,12 @@ export default function Hero() {
   });
   
   // Transform scroll progress to animation values
-  const scale3D = useTransform(scrollYProgress, [0, 0.6], [1, 0.4]); // Scale down faster
-  const opacity3D = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 0.5, 0]); // Fade out faster
+  const scale3D = useTransform(scrollYProgress, [0, 0.6], [1, 0.4]);
+  const opacity3D = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 0.5, 0]);
   
-  // Shared content animations - synchronized with 3D background
-  // They scale down and fade out exactly like the background to create a "moving forward" effect
+  // Shared content animations
   const contentScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.4]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 0.8, 0]); // Disappear by 50% scroll
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 0.8, 0]);
   
   const textFilter = useTransform(
     scrollYProgress,
@@ -45,8 +66,8 @@ export default function Hero() {
           clearInterval(typingInterval);
           setTypingComplete(true);
         }
-      }, 120); // Slower typing speed: 120ms per character
-    }, 3000); // Wait 3 seconds for sunrise to complete
+      }, 120);
+    }, 3000);
 
     return () => clearTimeout(sunriseDelay);
   }, []);
@@ -56,24 +77,98 @@ export default function Hero() {
     if (typingComplete) {
       const timer = setTimeout(() => {
         setButtonsAnimated(true);
-      }, 2500); // After both buttons finish opening (1s delay + 1.5s duration)
+      }, 2500);
       return () => clearTimeout(timer);
     }
   }, [typingComplete]);
 
   return (
-    <section ref={heroRef} id="home" className="relative min-h-screen flex items-center justify-center bg-dark-800 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-dark-800 overflow-hidden">
+      <div ref={heroRef} className="absolute inset-0 pointer-events-none" />
+      
+      {/* Animated Cyberpunk Grid Background */}
+      <div className="absolute inset-0 opacity-10 z-0">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 217, 255, 0.15) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 217, 255, 0.15) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px',
+            animation: 'gridMove 30s linear infinite',
+          }}
+        />
+      </div>
+
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-5">
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="absolute w-1 h-1 bg-primary-cyan rounded-full"
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0, 0.8, 0],
+              scale: [0, 1.5, 0],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Neon Lines */}
+      <motion.div 
+        className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-cyan/30 to-transparent z-5"
+        animate={{ opacity: [0.2, 0.5, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      />
+      <motion.div 
+        className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-purple/30 to-transparent z-5"
+        animate={{ opacity: [0.2, 0.5, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+      />
+
+      {/* Corner Tech Accents */}
+      <div className="absolute top-8 left-8 w-20 h-20 border-t-2 border-l-2 border-primary-cyan/30 rounded-tl-lg z-5" />
+      <div className="absolute top-8 right-8 w-20 h-20 border-t-2 border-r-2 border-primary-purple/30 rounded-tr-lg z-5" />
+      <div className="absolute bottom-8 left-8 w-20 h-20 border-b-2 border-l-2 border-primary-purple/30 rounded-bl-lg z-5" />
+      <div className="absolute bottom-8 right-8 w-20 h-20 border-b-2 border-r-2 border-primary-cyan/30 rounded-br-lg z-5" />
+
+      {/* Data Stream Lines */}
+      <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary-cyan/20 to-transparent overflow-hidden z-5">
+        <motion.div
+          className="w-full h-16 bg-gradient-to-b from-transparent via-primary-cyan/80 to-transparent"
+          animate={{ y: ['-100%', '800%'] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+      <div className="absolute right-4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary-purple/20 to-transparent overflow-hidden z-5">
+        <motion.div
+          className="w-full h-16 bg-gradient-to-b from-transparent via-primary-purple/80 to-transparent"
+          animate={{ y: ['800%', '-100%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
      
       {/* 3D Background - Scales down and fades on scroll */}
       <div className="absolute inset-0 z-0 ">
-
         <motion.div 
           className="absolute inset-0 flex items-center justify-center"
           style={{ 
             scale: scale3D,
             opacity: opacity3D
           }}
-        >
+        >   
           <NeuralCanvas />
         </motion.div>
       </div>
@@ -115,6 +210,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 100 }}
             animate={typingComplete ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="relative"
           >
             <span className="gradient-text">FULL STACK ENGINEER & </span>
           </motion.div>
@@ -122,6 +218,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 100 }}
             animate={typingComplete ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
+            className="relative"
           >
             <span className="gradient-text">AI ENGINEER</span>
           </motion.div>
@@ -139,52 +236,72 @@ export default function Hero() {
             scale: contentScale,
           }}
         >
-          {/* Download Resume Button - Opens like a book from left */}
-          <motion.a
-            href="/Danny-Yang-Resume.pdf"
-            download="Danny-Yang-Resume.pdf"
-            className="btn-primary text-sm tracking-wider flex items-center gap-2"
+          {/* Download Resume Button - Glass Effect */}
+          <motion.div
+            className="button-wrap"
             initial={{ opacity: 0, y: 100 }}
             animate={typingComplete ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 2, ease: "easeOut" }}
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="18" 
-              height="18" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
+            <button
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/Danny-Yang-Resume.pdf';
+                link.download = 'Danny-Yang-Resume.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="glass-btn glass-btn-primary bg-gradient-to-r from-primary-cyan to-primary-purple"
+              style={{ minWidth: '180px' }}
             >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            MY RESUME
-          </motion.a>
+              <span className="justify-center">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="24" 
+                  height="24" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                MY RESUME
+              </span>
+            </button>
+            <div className="button-shadow"></div>
+          </motion.div>
 
-          {/* Contact Button - Opens like a book from right */}
-          <motion.button
-            onClick={() => {
-              // Dispatch custom event to open chatbot
-              window.dispatchEvent(new CustomEvent('openChatbot'));
-            }}
-            className="btn-secondary text-sm tracking-wider flex items-center gap-2"
+          {/* Contact Button - Glass Effect */}
+          <motion.div
+            className="button-wrap"
             initial={{ opacity: 0, y: 100 }}
             animate={typingComplete ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 2, ease: "easeOut" }}
-
           >
-            <img src='/ai-icon.png' alt='AI Icon' className='w-8 h-8' />
-            LET'S CHAT
-          </motion.button>
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('openChatbot'));
+              }}
+              className="glass-btn glass-btn-secondary "
+              style={{ minWidth: '180px' }}
+            >
+              <span className="justify-center">
+                <img src='/ai-icon.png' alt='AI Icon' className='w-6 h-6' />
+                LET'S CHAT
+              </span>
+            </button>
+            <div className="button-shadow"></div>
+          </motion.div>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Enhanced */}
       <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
         initial={{ opacity: 0 }}
@@ -192,15 +309,40 @@ export default function Hero() {
         transition={{ duration: 1, delay: 2 }}
         style={{ opacity: contentOpacity }}
       >
-        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex items-start justify-center p-2">
+        <motion.div 
+          className="w-8 h-12 border-2 border-primary-cyan/50 rounded-full flex items-start justify-center p-2 relative"
+          animate={{ 
+            borderColor: ['rgba(0, 217, 255, 0.5)', 'rgba(168, 85, 247, 0.5)', 'rgba(0, 217, 255, 0.5)'],
+            boxShadow: ['0 0 10px rgba(0, 217, 255, 0.3)', '0 0 20px rgba(168, 85, 247, 0.3)', '0 0 10px rgba(0, 217, 255, 0.3)']
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
           <motion.div
             className="w-1.5 h-1.5 bg-primary-cyan rounded-full"
-            animate={{ y: [0, 12, 0] }}
+            animate={{ y: [0, 16, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
-        </div>
+        </motion.div>
+        <motion.p 
+          className="text-xs text-gray-400 mt-2 tracking-widest"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          SCROLL
+        </motion.p>
       </motion.div>
+
+      {/* CSS for grid animation */}
+      <style jsx>{`
+        @keyframes gridMove {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(60px, 60px);
+          }
+        }
+      `}</style>
     </section>
   );
 }
-

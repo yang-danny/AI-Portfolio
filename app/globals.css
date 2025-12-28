@@ -17,6 +17,7 @@
 
 html {
   scroll-behavior: smooth;
+  position: relative;
 }
 
 body {
@@ -33,7 +34,7 @@ body {
     /* Base dark gradient */
     radial-gradient(ellipse at top, #0f0f23 0%, #050510 100%);
   font-family: "Inter", sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
 }
 
@@ -88,15 +89,371 @@ body {
   box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(168, 85, 247, 0.3);
 }
 
-/* Button Styles */
-.btn-primary {
-  @apply px-8 py-4 bg-gradient-to-r from-primary-cyan to-primary-purple text-white rounded-lg font-medium;
-  @apply transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] hover:scale-105;
+/* ========== GLASS BUTTON STYLES ========== */
+
+/* CSS Custom Properties for Button Animations */
+:root {
+  --anim--hover-time: 250ms;
+  --anim--hover-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --angle-1: -45deg;
+  --angle-2: -45deg;
 }
 
-.btn-secondary {
-  @apply px-8 py-2 border-2 border-primary-cyan text-primary-cyan rounded-lg font-medium;
-  @apply transition-all duration-300 hover:bg-primary-cyan hover:text-dark-900 hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] hover:scale-105;
+/* Register custom properties for animation */
+@property --angle-1 {
+  syntax: '<angle>';
+  initial-value: -45deg;
+  inherits: false;
+}
+
+@property --angle-2 {
+  syntax: '<angle>';
+  initial-value: -45deg;
+  inherits: false;
+}
+
+/* Button Wrap Container */
+.button-wrap {
+  position: relative;
+  z-index: 2;
+  border-radius: 999vw;
+  background: transparent;
+  pointer-events: none;
+  transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  display: inline-block;
+}
+
+/* Button Shadow Container */
+.button-shadow {
+  --shadow-cuttoff-fix: 2em;
+  position: absolute;
+  width: calc(100% + var(--shadow-cuttoff-fix));
+  height: calc(100% + var(--shadow-cuttoff-fix));
+  top: calc(0% - var(--shadow-cuttoff-fix) / 2);
+  left: calc(0% - var(--shadow-cuttoff-fix) / 2);
+  filter: blur(clamp(2px, 0.125em, 12px));
+  -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Shadow */
+.button-shadow::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: 999vw;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15));
+  width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+  height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+  top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+  left: calc(var(--shadow-cuttoff-fix) - 0.875em);
+  padding: 0.125em;
+  box-sizing: border-box;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  overflow: visible;
+  opacity: 1;
+}
+
+/* ========== GLASS BUTTON BASE STYLES ========== */
+
+.glass-btn {
+  --border-width: clamp(1px, 0.0625em, 4px);
+  all: unset;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  pointer-events: auto;
+  z-index: 3;
+  background: linear-gradient(
+    -75deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.08)
+  );
+  border-radius: 999vw;
+  box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+    0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+    0 0 0 0 rgba(255, 255, 255, 1);
+  backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+  -webkit-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+  transition: all var(--anim--hover-time) var(--anim--hover-ease);
+}
+
+.glass-btn:hover {
+  transform: scale(0.975);
+  backdrop-filter: blur(0.01em);
+  -webkit-backdrop-filter: blur(0.01em);
+  box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+    0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5),
+    0 0 0 0 rgba(255, 255, 255, 1);
+}
+
+/* Glass Button Text */
+.glass-btn span {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: "Inter", sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  font-size: 0.875em;
+  color: rgba(255, 255, 255, 0.9);
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.15);
+  transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  padding-inline: 1.5em;
+  padding-block: 0.875em;
+}
+
+.glass-btn:hover span {
+  text-shadow: 0.025em 0.025em 0.025em rgba(0, 0, 0, 0.12);
+}
+
+/* Shine Effect */
+.glass-btn span::after {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  width: calc(100% - var(--border-width));
+  height: calc(100% - var(--border-width));
+  top: calc(0% + var(--border-width) / 2);
+  left: calc(0% + var(--border-width) / 2);
+  box-sizing: border-box;
+  border-radius: 999vw;
+  overflow: clip;
+  background: linear-gradient(
+    var(--angle-2),
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 40% 50%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  z-index: 3;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  transition: background-position calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease);
+}
+
+.glass-btn:hover span::after {
+  background-position: 25% 50%;
+}
+
+.glass-btn:active span::after {
+  background-position: 50% 15%;
+}
+
+/* ========== GLASS BUTTON OUTLINE ========== */
+
+.glass-btn::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: 999vw;
+  width: calc(100% + var(--border-width));
+  height: calc(100% + var(--border-width));
+  top: calc(0% - var(--border-width) / 2);
+  left: calc(0% - var(--border-width) / 2);
+  padding: var(--border-width);
+  box-sizing: border-box;
+  background: conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      rgba(0, 217, 255, 0.8),
+      rgba(0, 0, 0, 0) 5% 40%,
+      rgba(168, 85, 247, 0.8) 50%,
+      rgba(0, 0, 0, 0) 60% 95%,
+      rgba(0, 217, 255, 0.8)
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255, 255, 255, 0.5);
+}
+
+.glass-btn:hover::after {
+  --angle-1: -125deg;
+}
+
+.glass-btn:active::after {
+  --angle-1: -75deg;
+}
+
+/* Shadow Hover Effects */
+.button-wrap:has(.glass-btn:hover) .button-shadow {
+  filter: blur(clamp(2px, 0.0625em, 6px));
+  -webkit-filter: blur(clamp(2px, 0.0625em, 6px));
+  transition: filter var(--anim--hover-time) var(--anim--hover-ease);
+}
+
+.button-wrap:has(.glass-btn:hover) .button-shadow::after {
+  top: calc(var(--shadow-cuttoff-fix) - 0.875em);
+  opacity: 1;
+}
+
+/* Active State */
+.button-wrap:has(.glass-btn:active) {
+  transform: rotate3d(1, 0, 0, 25deg);
+}
+
+.button-wrap:has(.glass-btn:active) .glass-btn {
+  box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.125em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+    0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+    0 0.225em 0.05em 0 rgba(0, 0, 0, 0.05),
+    0 0.25em 0 0 rgba(255, 255, 255, 0.75),
+    inset 0 0.25em 0.05em 0 rgba(0, 0, 0, 0.15);
+}
+
+.button-wrap:has(.glass-btn:active) .button-shadow {
+  filter: blur(clamp(2px, 0.125em, 12px));
+  -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+}
+
+.button-wrap:has(.glass-btn:active) .button-shadow::after {
+  top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+  opacity: 0.75;
+}
+
+.button-wrap:has(.glass-btn:active) span {
+  text-shadow: 0.025em 0.25em 0.05em rgba(0, 0, 0, 0.12);
+}
+
+/* Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+  .glass-btn span::after,
+  .glass-btn:active span::after {
+    --angle-2: -45deg;
+  }
+  
+  .glass-btn::after,
+  .glass-btn:hover::after,
+  .glass-btn:active::after {
+    --angle-1: -75deg;
+  }
+}
+
+/* ========== BUTTON VARIANTS ========== */
+
+/* Primary Glass Button - with cyan to purple gradient */
+.glass-btn-primary {
+  background: linear-gradient(
+    to right,
+    rgba(0, 217, 255, 0.6),
+    rgba(168, 85, 247, 0.6)
+  );
+}
+
+/* Secondary Glass Button - lighter style */
+.glass-btn-secondary {
+  background: linear-gradient(
+    -75deg,
+    rgba(0, 217, 255, 0.15),
+    rgba(168, 85, 247, 0.25),
+    rgba(0, 217, 255, 0.15)
+  );
+}
+
+/* ========== LEGACY BUTTON FALLBACK ========== */
+
+/* Simple glass button for inline use (without wrapper) */
+.btn-glass {
+  all: unset;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875em 1.5em;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 0.875em;
+  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(
+    -75deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.08)
+  );
+  border-radius: 999vw;
+  box-shadow: 
+    inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+    0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  text-shadow: 0 0.1em 0.05em rgba(0, 0, 0, 0.15);
+}
+
+.btn-glass:hover {
+  transform: scale(0.98);
+  box-shadow: 
+    inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+    0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.btn-glass:active {
+  transform: scale(0.96);
+}
+
+/* Glass button with cyan accent */
+.btn-glass-cyan {
+  background: linear-gradient(
+    -75deg,
+    rgba(0, 217, 255, 0.1),
+    rgba(0, 217, 255, 0.25),
+    rgba(0, 217, 255, 0.1)
+  );
+  border-color: rgba(0, 217, 255, 0.4);
+}
+
+.btn-glass-cyan:hover {
+  box-shadow: 
+    inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(0, 217, 255, 0.4);
+}
+
+/* Glass button with gradient accent */
+.btn-glass-gradient {
+  background: linear-gradient(
+    -75deg,
+    rgba(0, 217, 255, 0.15),
+    rgba(168, 85, 247, 0.25),
+    rgba(0, 217, 255, 0.15)
+  );
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.btn-glass-gradient:hover {
+  box-shadow: 
+    inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(168, 85, 247, 0.4);
 }
 
 /* Section Padding */
@@ -113,5 +470,83 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* ========== CYBERPUNK ANIMATIONS ========== */
+
+/* Grid Movement Animation */
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Scan Line Animation */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.6);
+  }
+}
+
+/* Data Stream Animation */
+@keyframes dataStream {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(500%);
+  }
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Neon Flicker */
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 
+      0 0 5px rgba(0, 217, 255, 0.8),
+      0 0 10px rgba(0, 217, 255, 0.6),
+      0 0 20px rgba(0, 217, 255, 0.4);
+  }
+  20%, 24%, 55% {
+    opacity: 0.8;
+    text-shadow: none;
   }
 }

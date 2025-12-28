@@ -99,15 +99,16 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
 
           {/* View Project Button */}
-          <motion.button 
-            className="w-full py-3 rounded-lg bg-dark-700/50 border border-primary-cyan/30 text-primary-cyan text-sm font-bold tracking-widest uppercase hover:bg-primary-cyan hover:text-dark-900 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden"
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              View Project <ExternalLink size={14} />
-            </span>
-            <div className="absolute inset-0 bg-primary-cyan translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
-          </motion.button>
+          <div className="flex items-center justify-center w-full">
+            <motion.button 
+              className="glass-btn glass-btn-secondary w-full"
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="justify-center text-xs tracking-widest uppercase">
+                View Project <ExternalLink size={14} />
+              </span>
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.div>

@@ -5,10 +5,11 @@ import Expertise from '@/components/Expertise';
 import Journey from '@/components/Journey';
 import Contact from '@/components/Contact';
 import AIChatbot from '@/components/AIChatbot';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-dark-800 relative overflow-hidden">
+    <main className="relative min-h-screen bg-dark-800">
       <Navigation />
       <Hero />
       <Projects />
@@ -16,15 +17,7 @@ export default function Home() {
       <Journey />
       <Contact />
       <AIChatbot />
-      
-      {/* Footer */}
-      <footer className="bg-dark-900 border-t border-dark-700 py-8">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} D.Y ❤️
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

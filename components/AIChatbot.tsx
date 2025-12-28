@@ -123,15 +123,23 @@ export default function AIChatbot() {
 
   return (
     <>
-      {/* Chatbot Toggle Button */}
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full border-2 border-primary-purple flex items-center justify-center hover:scale-110 hover:shadow-[0_0_40px_rgba(168,85,247,0.8)] transition-all duration-300"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {isOpen ? <X size={28} className='text-primary-cyan' /> : <img src='/ai-icon.png' alt='AI Icon' className='w-14 h-14' />}
-      </motion.button>
+      {/* Chatbot Toggle Button - Glass Effect */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <motion.button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300
+            bg-gradient-to-br from-white/10 to-white/5
+            backdrop-filter backdrop-blur-md
+            border border-white/30
+            shadow-[inset_0_2px_4px_rgba(255,255,255,0.2),inset_0_-2px_4px_rgba(0,0,0,0.1),0_4px_8px_rgba(0,0,0,0.2)]
+            hover:shadow-[inset_0_2px_4px_rgba(255,255,255,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1),0_0_30px_rgba(168,85,247,0.5)]
+            hover:border-primary-purple/60"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {isOpen ? <X size={28} className='text-primary-cyan' /> : <img src='/ai-icon.png' alt='AI Icon' className='w-12 h-12' />}
+        </motion.button>
+      </div>
 
       {/* Chatbot Window */}
       <AnimatePresence>
@@ -194,9 +202,16 @@ export default function AIChatbot() {
                 <button
                   onClick={handleSend}
                   disabled={!inputValue.trim() || isTyping}
-                  className="w-10 h-10 rounded-lg bg-gradient-to-r from-primary-cyan to-primary-purple flex items-center justify-center transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200
+                    bg-gradient-to-br from-white/15 to-white/5
+                    backdrop-filter backdrop-blur-sm
+                    border border-white/30
+                    shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),inset_0_-1px_2px_rgba(0,0,0,0.1)]
+                    hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.3),0_0_15px_rgba(0,217,255,0.3)]
+                    hover:scale-105 hover:border-primary-cyan/50
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send size={18} />
+                  <Send size={18} className="text-white/90" />
                 </button>
               </div>
             </div>

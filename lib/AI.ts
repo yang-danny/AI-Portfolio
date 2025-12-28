@@ -118,7 +118,7 @@ export async function getWelcomeMessage(): Promise<string> {
 Generate a warm, friendly welcome message (2-3 sentences) as Danny Yang introducing yourself to a visitor on your portfolio website. Make it engaging and invite them to ask questions about your experience, skills, or projects.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.NEXT_PUBLIC_GEMINE_MODEL || 'gemini-2.5-flash',
       contents: prompt,
     });
     
@@ -157,7 +157,7 @@ export async function sendMessage(userMessage: string): Promise<string> {
     }
     
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: process.env.NEXT_PUBLIC_GEMINE_MODEL || 'gemini-2.5-flash',
       contents: contents.join('\n\n'),
       config: {
         temperature: 0.9,

@@ -135,23 +135,27 @@ export default function ContactForm() {
       </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-primary-cyan to-primary-purple text-white font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-      >
-        {isSubmitting ? (
-          <>
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            SEND MESSAGE
-            <Send size={18} />
-          </>
-        )}
-      </button>
+      <div className=" w-full flex items-center justify-center" >
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="glass-btn glass-btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span className="justify-center">
+            {isSubmitting ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                SEND MESSAGE
+                <Send size={18} />
+              </>
+            )}
+          </span>
+        </button>
+      </div>
 
       {/* Success Message */}
       {submitStatus === 'success' && (
